@@ -25,7 +25,7 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    // đăng ký sinh viên mới (FR-04)
+    // đăng ký sinh viên mới
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserDTO>> register(@Valid @RequestBody RegisterRequest request) {
         UserDTO userDTO = userService.registerStudent(request);
@@ -35,14 +35,14 @@ public class AuthController {
         );
     }
 
-    // đăng nhập (UC-01)
+    // đăng nhập
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody LoginRequest request) {
         AuthResponse response = authService.login(request);
         return ResponseEntity.ok(ApiResponse.success("Đăng nhập thành công", response));
     }
 
-    // làm mới access token (UC-02)
+    // làm mới access token
     @PostMapping("/refresh")
     public ResponseEntity<ApiResponse<AuthResponse>> refresh(@RequestBody Map<String, String> body) {
         String refreshToken = body.get("refreshToken");
@@ -50,7 +50,7 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success("Lấy access token mới thành công", response));
     }
 
-    // đăng xuất (UC-03)
+    // đăng xuất
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<Void>> logout(@RequestHeader("Authorization") String authHeader) {
         authService.logout(authHeader);

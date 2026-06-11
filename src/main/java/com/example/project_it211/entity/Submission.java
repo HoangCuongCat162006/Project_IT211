@@ -21,13 +21,10 @@ public class Submission {
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
-    // Link GitHub hoặc URL file
     private String githubUrl;
 
-    // URL file báo cáo lưu trên Cloudinary/S3
     private String reportUrl;
 
-    // PENDING, SUBMITTED, LATE, GRADED
     @Column(nullable = false)
     private String status = "PENDING";
 

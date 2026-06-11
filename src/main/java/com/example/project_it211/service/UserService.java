@@ -27,7 +27,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // Đổi mật khẩu cho người dùng hiện tại (FR-10)
+    // Đổi mật khẩu cho người dùng hiện tại
     public void changePassword(String username, ChangePasswordRequest request) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy người dùng với username: " + username));
@@ -44,7 +44,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    // đăng ký sinh viên mới (FR-04)
+    // đăng ký sinh viên mới
     public UserDTO registerStudent(RegisterRequest request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new DuplicateResourceException("Username đã tồn tại");
@@ -65,20 +65,20 @@ public class UserService {
         return convertToDTO(savedUser);
     }
 
-    // lấy user có phân trang, tìm kiếm, lọc (FR-05)
+    // lấy user có phân trang, tìm kiếm, lọc
     public Page<UserDTO> getUsers(String search, Role role, Boolean active, Pageable pageable) {
         return userRepository.searchUsers(search, role, active, pageable)
                 .map(this::convertToDTO);
     }
 
-    // lấy tất cả user (cũ, vẫn giữ lại để tương thích nếu cần)
+    // lấy tất cả user
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
-    // admin tạo user mới (FR-05)
+    // admin tạo user mới
     public UserDTO createUser(UserDTO userDTO) {
         if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
             throw new DuplicateResourceException("Username đã tồn tại");
@@ -92,7 +92,7 @@ public class UserService {
         user.setEmail(userDTO.getEmail());
         String rawPassword = userDTO.getPassword();
         if (rawPassword == null || rawPassword.trim().isEmpty()) {
-            rawPassword = "123456"; // mật khẩu mặc định
+            rawPassword = "123456";
         }
         user.setPassword(passwordEncoder.encode(rawPassword));
         user.setFullName(userDTO.getFullName());
@@ -103,7 +103,7 @@ public class UserService {
         return convertToDTO(savedUser);
     }
 
-    // admin cập nhật user (FR-05)
+    // admin cập nhật user
     public UserDTO updateUser(Long id, UserDTO userDTO) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy người dùng với ID: " + id));
@@ -136,7 +136,7 @@ public class UserService {
         return convertToDTO(updatedUser);
     }
 
-    // admin vô hiệu hóa user (FR-05)
+    // admin vô hiệu hóa user
     public void deactivateUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy người dùng với ID: " + id));

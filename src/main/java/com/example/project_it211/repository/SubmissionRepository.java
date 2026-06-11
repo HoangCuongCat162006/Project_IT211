@@ -22,4 +22,7 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
 
     // Kiểm tra sinh viên đã nộp bài vào khóa học chưa
     boolean existsByStudentIdAndCourseId(Long studentId, Long courseId);
+
+    // Đếm bài nộp theo status
+    long countByStatus(String status);
 }

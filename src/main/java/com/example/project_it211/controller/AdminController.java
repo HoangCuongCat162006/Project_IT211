@@ -23,8 +23,7 @@ public class AdminController {
     @Autowired
     private CourseService courseService;
 
-    // --- QUẢN LÝ NGƯỜI DÙNG (USERS) ---
-
+    //Quản lý User người dùng
     // Tìm kiếm, phân trang và lọc người dùng (FR-05)
     @GetMapping("/users")
     public ResponseEntity<ApiResponse<Page<UserDTO>>> getUsers(
@@ -36,7 +35,7 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success("Lấy danh sách người dùng thành công", users));
     }
 
-    // Tạo người dùng mới (FR-05)
+    // Tạo người dùng mới
     @PostMapping("/users")
     public ResponseEntity<ApiResponse<UserDTO>> createUser(@RequestBody UserDTO userDTO) {
         UserDTO created = userService.createUser(userDTO);
@@ -46,7 +45,7 @@ public class AdminController {
         );
     }
 
-    // Cập nhật người dùng (FR-05)
+    // Cập nhật người dùng
     @PutMapping("/users/{id}")
     public ResponseEntity<ApiResponse<UserDTO>> updateUser(
             @PathVariable Long id,
@@ -55,15 +54,14 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success("Cập nhật thông tin người dùng thành công", updated));
     }
 
-    // Vô hiệu hóa người dùng (FR-05)
+    // Vô hiệu hóa người dùng
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Void> deactivateUser(@PathVariable Long id) {
         userService.deactivateUser(id);
         return ResponseEntity.noContent().build();
     }
 
-    // --- QUẢN LÝ LỚP HỌC / KHÓA HỌC (COURSES) ---
-
+    // Quản lý lớp học-Khóa học
     // Tìm kiếm, phân trang và lọc khóa học (FR-05)
     @GetMapping("/courses")
     public ResponseEntity<ApiResponse<Page<CourseDTO>>> getCourses(
@@ -74,7 +72,7 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success("Lấy danh sách khóa học thành công", courses));
     }
 
-    // Tạo khóa học mới (FR-05)
+    // Tạo khóa học mới
     @PostMapping("/courses")
     public ResponseEntity<ApiResponse<CourseDTO>> createCourse(@RequestBody CourseDTO courseDTO) {
         CourseDTO created = courseService.createCourse(courseDTO);
@@ -84,7 +82,7 @@ public class AdminController {
         );
     }
 
-    // Cập nhật khóa học (FR-05)
+    // Cập nhật khóa học
     @PutMapping("/courses/{id}")
     public ResponseEntity<ApiResponse<CourseDTO>> updateCourse(
             @PathVariable Long id,
@@ -93,7 +91,7 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success("Cập nhật thông tin khóa học thành công", updated));
     }
 
-    // Vô hiệu hóa khóa học (FR-05)
+    // Vô hiệu hóa khóa học
     @DeleteMapping("/courses/{id}")
     public ResponseEntity<Void> deactivateCourse(@PathVariable Long id) {
         courseService.deactivateCourse(id);

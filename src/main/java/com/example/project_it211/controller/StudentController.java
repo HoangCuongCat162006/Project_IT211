@@ -39,7 +39,7 @@ public class StudentController {
     @Autowired
     private LectureMaterialService lectureMaterialService;
 
-    // sinh viên đăng ký khóa học (FR-06)
+    // sinh viên đăng ký khóa học
     @PostMapping("/enroll")
     public ResponseEntity<ApiResponse<EnrollmentDTO>> enrollCourse(
             @RequestParam Long studentId,
@@ -51,7 +51,7 @@ public class StudentController {
         );
     }
 
-    // Sinh viên nộp link GitHub (FR-07)
+    // Sinh viên nộp link GitHub
     @PostMapping("/submissions")
     public ResponseEntity<ApiResponse<SubmissionDTO>> submitLink(
             Principal principal,
@@ -63,7 +63,7 @@ public class StudentController {
         );
     }
 
-    // Sinh viên upload file báo cáo lên Cloudinary (UC-05)
+    // Sinh viên upload file báo cáo lên Cloudinary
     @PostMapping("/submissions/{id}/upload")
     public ResponseEntity<ApiResponse<SubmissionDTO>> uploadReport(
             Principal principal,
@@ -73,14 +73,14 @@ public class StudentController {
         return ResponseEntity.ok(ApiResponse.success("Upload báo cáo thành công", dto));
     }
 
-    // Sinh viên xem danh sách bài nộp của mình (FR-08)
+    // Sinh viên xem danh sách bài nộp của mình
     @GetMapping("/submissions")
     public ResponseEntity<ApiResponse<List<SubmissionDTO>>> getMySubmissions(Principal principal) {
         List<SubmissionDTO> list = submissionService.getMySubmissions(principal.getName());
         return ResponseEntity.ok(ApiResponse.success("Lấy danh sách bài nộp thành công", list));
     }
 
-    // Sinh viên đổi mật khẩu (FR-10)
+    // Sinh viên đổi mật khẩu
     @PutMapping("/change-password")
     public ResponseEntity<ApiResponse<Void>> changePassword(
             Principal principal,
@@ -89,7 +89,7 @@ public class StudentController {
         return ResponseEntity.ok(ApiResponse.success("Đổi mật khẩu thành công", null));
     }
 
-    // Sinh viên xem tài liệu khóa học (FR-09)
+    // Sinh viên xem tài liệu khóa học
     @GetMapping("/materials/{courseId}")
     public ResponseEntity<ApiResponse<Page<LectureMaterialDTO>>> getMaterials(
             @PathVariable Long courseId,

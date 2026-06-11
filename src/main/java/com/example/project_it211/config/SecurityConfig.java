@@ -74,6 +74,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 // Public endpoints
                 .requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/refresh").permitAll()
+                // Swagger UI & OpenAPI docs (public)
+                .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                 // Admin only
                 .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 // Lecturer only

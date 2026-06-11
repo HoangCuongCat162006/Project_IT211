@@ -21,7 +21,6 @@ public class Grade {
     @JoinColumn(name = "lecturer_id", nullable = false)
     private User lecturer;
 
-    // Điểm từ 0 đến 100
     @Column(nullable = false)
     private Double score;
 

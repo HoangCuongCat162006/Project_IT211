@@ -24,13 +24,10 @@ public class AuthService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private TokenBlacklistRepository tokenBlacklistRepository;
-
     @Autowired
     private JwtUtil jwtUtil;
 

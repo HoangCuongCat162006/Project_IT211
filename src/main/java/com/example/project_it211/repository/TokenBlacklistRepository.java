@@ -14,7 +14,6 @@ public interface TokenBlacklistRepository extends JpaRepository<TokenBlacklist, 
 
     boolean existsByToken(String token);
 
-    // Xóa các token đã hết hạn (cleanup)
     @Modifying
     @Transactional
     @Query("DELETE FROM TokenBlacklist t WHERE t.expiresAt < :now")

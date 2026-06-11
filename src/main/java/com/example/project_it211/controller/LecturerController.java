@@ -33,7 +33,7 @@ public class LecturerController {
     @Autowired
     private LectureMaterialService lectureMaterialService;
 
-    // Giảng viên chấm điểm đồ án (FR-08)
+    // Giảng viên chấm điểm đồ án
     @PostMapping("/grades")
     public ResponseEntity<ApiResponse<GradeDTO>> gradeSubmission(
             Principal principal,
@@ -42,7 +42,7 @@ public class LecturerController {
         return ResponseEntity.ok(ApiResponse.success("Chấm điểm bài nộp thành công", dto));
     }
 
-    // Giảng viên xem & lọc danh sách bài nộp cần chấm (FR-08)
+    // Giảng viên xem & lọc danh sách bài nộp cần chấm
     @GetMapping("/submissions")
     public ResponseEntity<ApiResponse<Page<SubmissionDTO>>> getSubmissions(
             @RequestParam Long courseId,
@@ -59,7 +59,7 @@ public class LecturerController {
         return ResponseEntity.ok(ApiResponse.success("Lấy danh sách bài nộp thành công", result));
     }
 
-    // Giảng viên tải lên tài liệu học tập (FR-09)
+    // Giảng viên tải lên tài liệu học tập
     @PostMapping("/materials")
     public ResponseEntity<ApiResponse<LectureMaterialDTO>> uploadMaterial(
             Principal principal,
@@ -73,7 +73,7 @@ public class LecturerController {
         );
     }
 
-    // Học viên/Giảng viên xem danh sách tài liệu học tập (FR-09)
+    // Học viên/Giảng viên xem danh sách tài liệu học tập
     @GetMapping("/materials/{courseId}")
     public ResponseEntity<ApiResponse<Page<LectureMaterialDTO>>> getMaterials(
             @PathVariable Long courseId,
