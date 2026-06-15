@@ -152,6 +152,99 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Quên mật khẩu - Gửi OTP (FR-11)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"sinhvien01@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/forgot-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Quên mật khẩu - Xác thực OTP (FR-11)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"sinhvien01@example.com\",\n    \"otp\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/verify-otp",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"verify-otp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Quên mật khẩu - Đặt lại mật khẩu mới (FR-11)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"sinhvien01@example.com\",\n    \"otp\": \"123456\",\n    \"newPassword\": \"matkhaumoi123\",\n    \"confirmPassword\": \"matkhaumoi123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/reset-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

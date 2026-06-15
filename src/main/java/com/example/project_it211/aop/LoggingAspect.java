@@ -36,7 +36,8 @@ public class LoggingAspect {
      *   - AuthService, UserService, CourseService, EnrollmentService,
      *     GradeService, SubmissionService, LectureMaterialService, CloudinaryService
      */
-    @Around("execution(* com.example.project_it211.service.*.*(..))")
+    @Around("execution(* com.example.project_it211.controller..*(..)) || " +
+            "execution(* com.example.project_it211.service..*(..))")
     public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
 
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();

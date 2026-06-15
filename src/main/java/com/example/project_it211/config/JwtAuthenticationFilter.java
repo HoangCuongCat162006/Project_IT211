@@ -19,66 +19,38 @@ import java.util.List;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    private TokenBlacklistRepository tokenBlacklistRepository;
+    @Autowired private JwtUtil jwtUtil;
+    @Autowired private TokenBlacklistRepository tokenBlacklistRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-
         String authHeader = request.getHeader("Authorization");
-
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
+            filterChain.doFilter(request, response); return;
         }
-
         String token = authHeader.substring(7);
-
         try {
-            // 1. Validate token signature và expiry
-            if (!jwtUtil.validateToken(token)) {
-                filterChain.doFilter(request, response);
-                return;
-            }
-
-            // 2. Kiểm tra blacklist (bị logout)
+            if (!jwtUtil.validateToken(token)) { filterChain.doFilter(request, response); return; }
             if (tokenBlacklistRepository.existsByToken(token)) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType("application/json");
-                response.getWriter().write("{\"error\":\"Token đã bị thu hồi (đã đăng xuất)\"}");
+                response.getWriter().write("{\"error\":\"Token đã bị thu hồi\"}");
                 return;
             }
-
-            // 3. Chỉ chấp nhận accessToken (không chấp nhận refreshToken cho các API thường)
-            String tokenType = jwtUtil.extractTokenType(token);
-            if (!"access".equals(tokenType)) {
-                filterChain.doFilter(request, response);
-                return;
+            if (!"access".equals(jwtUtil.extractTokenType(token))) {
+                filterChain.doFilter(request, response); return;
             }
-
-            // 4. Load authentication vào SecurityContext
             String username = jwtUtil.extractUsername(token);
-            String role = jwtUtil.extractRole(token);
-
+            String role     = jwtUtil.extractRole(token);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        username,
-                        null,
-                        List.of(new SimpleGrantedAuthority("ROLE_" + role))
-                );
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                        username, null, List.of(new SimpleGrantedAuthority("ROLE_" + role)));
+                auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(auth);
             }
-
-        } catch (Exception e) {
-            // Token không hợp lệ → tiếp tục chuỗi filter, Spring Security sẽ từ chối
-        }
-
+        } catch (Exception ignored) {}
         filterChain.doFilter(request, response);
     }
 }

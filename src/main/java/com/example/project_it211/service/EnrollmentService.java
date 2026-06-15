@@ -24,10 +24,10 @@ public class EnrollmentService {
     private CourseRepository courseRepository;
 
     // sinh viên đăng ký khóa học (FR-06)
-    public EnrollmentDTO enrollCourse(Long studentId, Long courseId) {
-        User student = userRepository.findById(studentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy sinh viên với ID: " + studentId));
-        
+    public EnrollmentDTO enrollCourse(String username, Long courseId) {
+        User student = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy sinh viên: " + username));
+
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy khóa học với ID: " + courseId));
 
@@ -39,7 +39,7 @@ public class EnrollmentService {
             throw new IllegalArgumentException("Khóa học không hoạt động");
         }
 
-        if (enrollmentRepository.findByStudentIdAndCourseId(studentId, courseId).isPresent()) {
+        if (enrollmentRepository.findByStudentIdAndCourseId(student.getId(), courseId).isPresent()) {
             throw new DuplicateResourceException("Sinh viên đã đăng ký khóa học này trước đó");
         }
 
@@ -55,6 +55,7 @@ public class EnrollmentService {
         EnrollmentDTO dto = new EnrollmentDTO();
         dto.setId(enrollment.getId());
         dto.setStudentId(enrollment.getStudent().getId());
+        dto.setStudentUsername(enrollment.getStudent().getUsername());
         dto.setCourseId(enrollment.getCourse().getId());
         dto.setEnrolledAt(enrollment.getEnrolledAt());
         dto.setStatus(enrollment.getStatus());

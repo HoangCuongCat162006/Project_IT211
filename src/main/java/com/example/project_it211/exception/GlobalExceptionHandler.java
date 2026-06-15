@@ -1,6 +1,10 @@
 package com.example.project_it211.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -80,6 +84,39 @@ public class GlobalExceptionHandler {
         body.put("status", HttpStatus.BAD_REQUEST.value());
         body.put("error", "Bad Request");
         body.put("message", message);
+        body.put("path", getPath(request));
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Object> handleBadCredentials(BadCredentialsException ex, WebRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", getFormattedTimestamp());
+        body.put("status", HttpStatus.UNAUTHORIZED.value());
+        body.put("error", "Unauthorized");
+        body.put("message", "Sai tài khoản hoặc mật khẩu");
+        body.put("path", getPath(request));
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({LockedException.class, DisabledException.class})
+    public ResponseEntity<Object> handleAccountLocked(Exception ex, WebRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", getFormattedTimestamp());
+        body.put("status", HttpStatus.FORBIDDEN.value());
+        body.put("error", "Forbidden");
+        body.put("message", "Tài khoản đã bị khóa hoặc vô hiệu hóa");
+        body.put("path", getPath(request));
+        return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Object> handleNotReadable(HttpMessageNotReadableException ex, WebRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", getFormattedTimestamp());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "Bad Request");
+        body.put("message", "Dữ liệu JSON gửi lên không hợp lệ");
         body.put("path", getPath(request));
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }

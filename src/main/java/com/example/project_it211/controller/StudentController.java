@@ -39,12 +39,12 @@ public class StudentController {
     @Autowired
     private LectureMaterialService lectureMaterialService;
 
-    // sinh viên đăng ký khóa học
+    // sinh viên đăng ký khóa học - lấy username từ JWT token qua Principal
     @PostMapping("/enroll")
     public ResponseEntity<ApiResponse<EnrollmentDTO>> enrollCourse(
-            @RequestParam Long studentId,
+            Principal principal,
             @RequestParam Long courseId) {
-        EnrollmentDTO dto = enrollmentService.enrollCourse(studentId, courseId);
+        EnrollmentDTO dto = enrollmentService.enrollCourse(principal.getName(), courseId);
         return new ResponseEntity<>(
                 ApiResponse.success("Đăng ký khóa học thành công", dto),
                 HttpStatus.CREATED
